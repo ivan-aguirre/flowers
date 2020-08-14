@@ -24,14 +24,21 @@ class Task(object):
             raise Exception('EffortMap requires (Phases, Effort) pairs')
         it = iter(effort_map)
         self.effort_dict = dict(zip(it, it))
-        self.effort_required_now = next(iter(self.effort_dict.values()))
+
+        self.current_phase, self.current_effort = self._next_phase()
+
+    def _next_phase(self):
+        return next(((phase, effort) for (phase, effort) in self.effort_dict.items() if effort > 0), (None, 0))
 
     def apply_effort_from(self, p: Person):
-        required = self.effort_dict[p.role.phase]
+        required = self.current_effort
         required -= p.consume_effort(required)
-
         self.effort_dict[p.role.phase] = required
-        self.effort_required_now = required
+
+        if required == 0:
+            self.current_phase, self.current_effort = self._next_phase()
+        else:
+            self.current_effort = required
 
     def effort_required_for(self, phase: Phase):
         return self.effort_dict[phase]
@@ -54,6 +61,6 @@ class Board(object):
 
     def run_day(self):
         task = self.tasks[0]
-        for people in self._team:
-            task.apply_effort_from(people)
-
+        for person in self._team:
+            if task.current_phase == person.role.phase:
+                task.apply_effort_from(person)

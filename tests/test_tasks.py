@@ -13,11 +13,11 @@ class TestTask(TestCase):
         self.assertEqual(p.effort_available, 10)
 
         t: Task = Task(p.role.phase, 10)
-        self.assertEqual(t.effort_required_now, 10)
+        self.assertEqual(t.current_effort, 10)
 
         t.apply_effort_from(p)
 
-        self.assertEqual(t.effort_required_now, 0)
+        self.assertEqual(t.current_effort, 0)
         self.assertEqual(p.effort_available, 0)
 
     def test_task_half_completed(self):
@@ -26,11 +26,11 @@ class TestTask(TestCase):
         self.assertEqual(p.effort_available, 3)
 
         t: Task = Task(p.role.phase, 10)
-        self.assertEqual(t.effort_required_now, 10)
+        self.assertEqual(t.current_effort, 10)
 
         t.apply_effort_from(p)
 
-        self.assertEqual(t.effort_required_now, 7)
+        self.assertEqual(t.current_effort, 7)
         self.assertEqual(p.effort_available, 0)
 
     def test_two_tasks_one_completed(self):
@@ -40,14 +40,14 @@ class TestTask(TestCase):
 
         t1: Task = Task(p.role.phase, 10)
         t1.apply_effort_from(p)
-        self.assertEqual(t1.effort_required_now, 0)
+        self.assertEqual(t1.current_effort, 0)
         self.assertEqual(p.effort_available, 5)
 
         t2: Task = Task(p.role.phase, 10)
-        self.assertEqual(t2.effort_required_now, 10)
+        self.assertEqual(t2.current_effort, 10)
         t2.apply_effort_from(p)
 
-        self.assertEqual(t2.effort_required_now, 5)
+        self.assertEqual(t2.current_effort, 5)
         self.assertEqual(p.effort_available, 0)
 
     def test_person_exhausted(self):
@@ -57,15 +57,15 @@ class TestTask(TestCase):
 
         t1: Task = Task(p.role.phase, 10)
         t1.apply_effort_from(p)
-        self.assertEqual(t1.effort_required_now, 0)
+        self.assertEqual(t1.current_effort, 0)
         self.assertEqual(p.effort_available, 0)
 
         t2: Task = Task(p.role.phase, 1)
-        self.assertEqual(t2.effort_required_now, 1)
+        self.assertEqual(t2.current_effort, 1)
         t2.apply_effort_from(p)
 
         # nothing changes...
-        self.assertEqual(t2.effort_required_now, 1)
+        self.assertEqual(t2.current_effort, 1)
         self.assertEqual(p.effort_available, 0)
 
     def test_two_person_one_task(self):
@@ -79,9 +79,9 @@ class TestTask(TestCase):
 
         t: Task = Task(p1.role.phase, 20)
         t.apply_effort_from(p1)
-        self.assertEqual(t.effort_required_now, 10)
+        self.assertEqual(t.current_effort, 10)
         self.assertEqual(p1.effort_available, 0)
 
         t.apply_effort_from(p2)
-        self.assertEqual(3, t.effort_required_now)
+        self.assertEqual(3, t.current_effort)
         self.assertEqual(0, p1.effort_available)

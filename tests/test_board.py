@@ -16,7 +16,7 @@ class TestBoard(TestCase):
 
         # Team roles
         dev: Role = Role("Developer", phase=development)
-        tester: Role = Role("Tester", phase=development)
+        tester: Role = Role("Tester", phase=tests)
 
         # Team
         andrea_dev: Person = Person(role=dev)
@@ -31,13 +31,40 @@ class TestBoard(TestCase):
         task1: Task = Task(development, 10, tests, 20)
         board.accept(task1)
 
-        andrea_dev.effort_available = 7
-        ivan_dev.effort_available = 5
+        # First day
+        andrea_dev.effort_available = 3
+        ivan_dev.effort_available = 4
+        benedict_tester.effort_available = 5
+
+        board.run_day()
+
+        self.assertEqual(3, task1.effort_required_for(development))
+        self.assertEqual(0, andrea_dev.effort_available)
+        self.assertEqual(0, ivan_dev.effort_available)
+
+        self.assertEqual(20, task1.effort_required_for(tests))
+        self.assertEqual(5, benedict_tester.effort_available)
+
+        # Second day
+        andrea_dev.effort_available = 3
+        ivan_dev.effort_available = 4
+        benedict_tester.effort_available = 5
 
         board.run_day()
 
         self.assertEqual(0, task1.effort_required_for(development))
-        self.assertEqual(20, task1.effort_required_for(tests))
-
         self.assertEqual(0, andrea_dev.effort_available)
-        self.assertEqual(2, ivan_dev.effort_available)
+        self.assertEqual(4, ivan_dev.effort_available)
+
+        self.assertEqual(15, task1.effort_required_for(tests))
+        self.assertEqual(0, benedict_tester.effort_available)
+
+        # 3th day
+        benedict_tester.effort_available = 16
+
+        board.run_day()
+
+        self.assertEqual(0, task1.effort_required_for(tests))
+        self.assertEqual(1, benedict_tester.effort_available)
+
+        # Next: task delivered and lead time calculation
