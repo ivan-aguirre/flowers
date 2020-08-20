@@ -1,0 +1,1 @@
+When simulation is done plot the lead time histogram.

@@ -1,0 +1,4 @@
+Enable smart people allocation.
+
+E.g.: if someone has been working on a task since yestarday then today s/he must continue to work on it today unless
+there's an expedite without anyone working on it.

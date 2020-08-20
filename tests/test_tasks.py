@@ -1,8 +1,11 @@
 from unittest import TestCase
 
 from flowers.person import Person
-from flowers.task import Task, Phase
+from flowers.task import Task, OtherPhaseException
+from tests import builder
 from tests.builder import build_developer
+
+
 
 
 class TestTask(TestCase):
@@ -85,3 +88,9 @@ class TestTask(TestCase):
         t.apply_effort_from(p2)
         self.assertEqual(3, t.current_effort)
         self.assertEqual(0, p1.effort_available)
+
+    def test_effort_on_different_phase(self):
+        p1: Person = build_developer()
+
+        t: Task = Task(builder.Test_phase, 0)
+        self.assertRaises(OtherPhaseException, lambda: t.apply_effort_from(p1))
