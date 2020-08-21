@@ -30,7 +30,7 @@ class Task(object):
         it = iter(effort_map)
         self.effort_dict = dict(zip(it, it))
         self.current_phase, self.current_effort = self._next_phase()
-        self.ready = False
+        self.done = False
 
     def _next_phase(self):
         return next(((phase, effort) for (phase, effort) in self.effort_dict.items() if effort > 0), (None, 0))
@@ -49,8 +49,13 @@ class Task(object):
             self.current_effort = required
 
         if self.current_effort == 0:
-            self.ready = True
+            self.done = True
 
     def effort_required_for(self, phase: Phase):
         return self.effort_dict[phase]
 
+    def one_more_day(self):
+        if self.cycle_time is None:
+            self.cycle_time = 1
+        else:
+            self.cycle_time += 1

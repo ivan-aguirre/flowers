@@ -7,3 +7,6 @@ class Person(object):
         to_consume = min(effort_required, self.effort_available)
         self.effort_available -= to_consume
         return to_consume
+
+    def can_work_on(self, phase):
+        return self.role.phase == phase

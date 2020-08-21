@@ -1,9 +1,9 @@
-
 class Board(object):
     def __init__(self, name: str):
         self.name = name
         self.tasks = []
         self._team = None
+        self._days = 0
 
     def columns(self, *args):
         pass
@@ -15,13 +15,25 @@ class Board(object):
         self.tasks.append(task)
 
     def run_day(self):
-        for task in [t for t in self.tasks if not t.ready]:
-            if task.cycle_time is None:
-                task.cycle_time = 1
-            else:
-                task.cycle_time += 1
+        self._days += 1
+        for task in [t for t in self.tasks if not t.done]:
+            task.one_more_day()
 
             current_phase = task.current_phase
-            for person in [p for p in self._team if p.role.phase == current_phase]:
-                if person.role.phase == task.current_phase:
-                    task.apply_effort_from(person)
+            eligible_people = [_person for _person in self._team if _person.can_work_on(current_phase)]
+            for person in eligible_people:
+                task.apply_effort_from(person)
+                if task.current_phase != current_phase:
+                    break
+
+    def run(self, days):
+        self._days = days
+
+    @property
+    def days(self):
+        return self._days
+
+
+def run(board: Board, days: int):
+    for _ in range(0, days):
+        board.run_day()

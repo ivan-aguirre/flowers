@@ -30,7 +30,7 @@ class TestBoard(TestCase):
         board.team(andrea_dev, ivan_dev, benedict_tester)
 
         task1: Task = Task(development, 10, tests, 20)
-        self.assertEqual(False, task1.ready)
+        self.assertEqual(False, task1.done)
 
         board.accept(task1)
 
@@ -41,7 +41,7 @@ class TestBoard(TestCase):
 
         board.run_day()
 
-        self.assertEqual(False, task1.ready)
+        self.assertEqual(False, task1.done)
         self.assertEqual(1, task1.cycle_time)
 
         self.assertEqual(3, task1.effort_required_for(development))
@@ -58,7 +58,7 @@ class TestBoard(TestCase):
 
         board.run_day()
 
-        self.assertEqual(False, task1.ready)
+        self.assertEqual(False, task1.done)
         self.assertEqual(2, task1.cycle_time)
 
         self.assertEqual(0, task1.effort_required_for(development))
@@ -75,7 +75,7 @@ class TestBoard(TestCase):
 
         board.run_day()
 
-        self.assertEqual(True, task1.ready)
+        self.assertEqual(True, task1.done)
         self.assertEqual(3, task1.cycle_time)
 
         self.assertEqual(0, task1.effort_required_for(tests))

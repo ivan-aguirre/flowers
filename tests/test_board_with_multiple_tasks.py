@@ -32,7 +32,7 @@ class TestBoardWithMultipleTasks(TestCase):
         task1: Task = Task(development, 3, tests, 1)
         task2: Task = Task(development, 5, tests, 2)
 
-        self.assertEqual(False, task1.ready)
+        self.assertEqual(False, task1.done)
 
         board.accept(task1)
         board.accept(task2)
@@ -43,12 +43,12 @@ class TestBoardWithMultipleTasks(TestCase):
         benedict_tester.effort_available = 5
 
         board.run_day()
-        self.assertEqual(False, task1.ready)
+        self.assertEqual(False, task1.done)
         self.assertEqual(1, task1.cycle_time)
         self.assertEqual(0, task1.effort_required_for(development))
         self.assertEqual(1, task1.effort_required_for(tests))
 
-        self.assertEqual(False, task2.ready)
+        self.assertEqual(False, task2.done)
         self.assertEqual(1, task2.cycle_time)
         self.assertEqual(1, task2.effort_required_for(development))
         self.assertEqual(2, task2.effort_required_for(tests))
@@ -59,12 +59,12 @@ class TestBoardWithMultipleTasks(TestCase):
         benedict_tester.effort_available = 5
 
         board.run_day()
-        self.assertEqual(True, task1.ready)
+        self.assertEqual(True, task1.done)
         self.assertEqual(2, task1.cycle_time)
         self.assertEqual(0, task1.effort_required_for(development))
         self.assertEqual(0, task1.effort_required_for(tests))
 
-        self.assertEqual(False, task2.ready)
+        self.assertEqual(False, task2.done)
         self.assertEqual(2, task2.cycle_time)
         self.assertEqual(0, task2.effort_required_for(development))
         self.assertEqual(2, task2.effort_required_for(tests))
@@ -75,12 +75,12 @@ class TestBoardWithMultipleTasks(TestCase):
         benedict_tester.effort_available = 4
 
         board.run_day()
-        self.assertEqual(True, task1.ready)
+        self.assertEqual(True, task1.done)
         self.assertEqual(2, task1.cycle_time)
         self.assertEqual(0, task1.effort_required_for(development))
         self.assertEqual(0, task1.effort_required_for(tests))
 
-        self.assertEqual(True, task2.ready)
+        self.assertEqual(True, task2.done)
         self.assertEqual(3, task2.cycle_time)
         self.assertEqual(0, task2.effort_required_for(development))
         self.assertEqual(0, task2.effort_required_for(tests))
