@@ -1,6 +1,0 @@
-Run a simulation for an defined ammount of days or until there's no more tasks to work with.
-
-After any day, or at the end of the simulation, we must able to query:
-
-* The amount of days passed.
-* The unfinished tasks.

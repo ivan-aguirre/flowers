@@ -45,7 +45,7 @@ class TestSimulation(TestCase):
         run(board, days=5)
 
         self.assertEqual(5, board.days)
-        #TODO: After any day, or at the end of the simulation, we must able to query...
+
 
     def test_simulation_until_there_s_no_more_tasks(self):
         #TODO: finish

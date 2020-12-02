@@ -37,6 +37,8 @@ class TestBoardWithMultipleTasks(TestCase):
         board.accept(task1)
         board.accept(task2)
 
+        self.assertEqual(0, board.days)
+
         # First day
         andrea_dev.effort_available = 3
         ivan_dev.effort_available = 4
@@ -52,6 +54,9 @@ class TestBoardWithMultipleTasks(TestCase):
         self.assertEqual(1, task2.cycle_time)
         self.assertEqual(1, task2.effort_required_for(development))
         self.assertEqual(2, task2.effort_required_for(tests))
+
+        self.assertEqual(2, board.unfinished_tasks)
+        self.assertEqual(1, board.days)
 
         # Second day
         andrea_dev.effort_available = 3
@@ -69,6 +74,9 @@ class TestBoardWithMultipleTasks(TestCase):
         self.assertEqual(0, task2.effort_required_for(development))
         self.assertEqual(2, task2.effort_required_for(tests))
 
+        self.assertEqual(1, board.unfinished_tasks)
+        self.assertEqual(2, board.days)
+
         # Third day
         andrea_dev.effort_available = 6
         ivan_dev.effort_available = 3
@@ -84,3 +92,11 @@ class TestBoardWithMultipleTasks(TestCase):
         self.assertEqual(3, task2.cycle_time)
         self.assertEqual(0, task2.effort_required_for(development))
         self.assertEqual(0, task2.effort_required_for(tests))
+
+        self.assertEqual(0, board.unfinished_tasks)
+        self.assertEqual(3, board.days)
+
+        # Fourth day
+        board.run_day()
+        self.assertEqual(0, board.unfinished_tasks)
+        self.assertEqual(4, board.days)

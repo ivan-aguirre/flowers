@@ -1,1 +1,1 @@
-When simulation is done plot the lead time histogram.
+When simulation is done plot the cycle time histogram.
