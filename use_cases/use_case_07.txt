@@ -1,3 +1,0 @@
-Allow random numbers for efforts and Tasks inbound throughput.
-
-Note that expedites must also be randomically generated.

@@ -1,3 +1,0 @@
-Enable expedite pull policy.
-
-An expedite must be worked on even if there's other unfinished tasks waiting or in progress.
